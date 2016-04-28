@@ -10,7 +10,7 @@ import Foundation
 extension NSDate {
     private static var _grecorianCalender:NSCalendar!
     
-    class func dateWithYear(year:Int, month:Int, day:Int, hour:Int = 0, minute:Int = 0, second:Int = 0)-> NSDate {
+    class func dateWithYear(year:Int, month:Int, day:Int, hour:Int = 0, minute:Int = 0, second:Int = 0, nanosecond:Int = 0)-> NSDate {
         let date:NSDate = NSDate()
         let comps:NSDateComponents = date.gregorianCalendar.components(
             [.Year, .Month, .Day, .Hour, .Minute, .Second, .Nanosecond], fromDate: date)
@@ -20,7 +20,7 @@ extension NSDate {
         comps.hour = hour
         comps.minute = minute
         comps.second = second
-        comps.nanosecond = 0
+        comps.nanosecond = nanosecond
         return date.gregorianCalendar.dateFromComponents(comps)!
     }
     
@@ -126,6 +126,34 @@ extension NSDate {
     
     var nanoSecond:Int{
         return self.gregorianCalendar.component(NSCalendarUnit.Nanosecond, fromDate: self)
+    }
+    
+    public func setYear(value:Int) -> NSDate {
+        return NSDate.dateWithYear(value, month: self.month, day: self.day, hour: self.hour, minute: self.minute, second: self.second, nanosecond: self.nanoSecond)
+    }
+    
+    public func setMonth(value:Int) -> NSDate {
+        return NSDate.dateWithYear(self.year, month: value, day: self.day, hour: self.hour, minute: self.minute, second: self.second, nanosecond: self.nanoSecond)
+    }
+    
+    public func setDay(value:Int) -> NSDate {
+        return NSDate.dateWithYear(self.year, month: self.month, day: value, hour: self.hour, minute: self.minute, second: self.second, nanosecond: self.nanoSecond)
+    }
+    
+    public func setHour(value:Int) -> NSDate {
+        return NSDate.dateWithYear(self.year, month: self.month, day: self.day, hour: value, minute: self.minute, second: self.second, nanosecond: self.nanoSecond)
+    }
+    
+    public func setMinute(value:Int) -> NSDate {
+        return NSDate.dateWithYear(self.year, month: self.month, day: self.day, hour: self.hour, minute: value, second: self.second, nanosecond: self.nanoSecond)
+    }
+    
+    public func setSecond(value:Int) -> NSDate {
+        return NSDate.dateWithYear(self.year, month: self.month, day: self.day, hour: self.hour, minute: self.minute, second: value, nanosecond: self.nanoSecond)
+    }
+    
+    public func setNanosecond(value:Int) -> NSDate {
+        return NSDate.dateWithYear(self.year, month: self.month, day: self.day, hour: self.hour, minute: self.minute, second: self.second, nanosecond: value)
     }
     
     var nextDate:NSDate {

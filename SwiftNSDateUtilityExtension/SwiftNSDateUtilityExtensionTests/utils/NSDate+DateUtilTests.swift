@@ -33,7 +33,7 @@ class NSDateDateUtilTests: XCTestCase {
         let date1_1:NSDate = cal.dateFromComponents(comps1)!
         XCTAssertTrue(date1.isEqualToDate(date1_1))
         
-        let date2:NSDate = NSDate.dateWithYear(2015, month: 12, day: 4, hour: 15, minute: 32, second: 13)
+        let date2:NSDate = NSDate.dateWithYear(2015, month: 12, day: 4, hour: 15, minute: 32, second: 13, nanosecond: 1234)
         let comps2:NSDateComponents = NSDateComponents()
         comps2.year = 2015
         comps2.month = 12
@@ -41,9 +41,9 @@ class NSDateDateUtilTests: XCTestCase {
         comps2.hour = 15
         comps2.minute = 32
         comps2.second = 13
-        comps2.nanosecond = 0
+        comps2.nanosecond = 1234
         let date2_1:NSDate = cal.dateFromComponents(comps2)!
-        XCTAssertTrue(date2.isEqualToDate(date2_1))
+        XCTAssertTrue(date2.compare(date2_1) == NSComparisonResult.OrderedSame)
     }
     
     func test_gregorianCalendar() {
@@ -147,16 +147,65 @@ class NSDateDateUtilTests: XCTestCase {
         XCTAssertEqual(date1.day, 7)
     }
     
+    func test_setYear(){
+        let date1 = NSDate.dateWithYear(2015, month: 2, day: 3, hour: 13, minute: 24, second: 34, nanosecond: 35)
+        let date2 = date1.setYear(2011)
+        let date3 = NSDate.dateWithYear(2011, month: 2, day: 3, hour: 13, minute: 24, second: 34, nanosecond: 35)
+        XCTAssertTrue(date2.compare(date3) == NSComparisonResult.OrderedSame)
+    }
+    
+    func test_setMonth(){
+        let date1 = NSDate.dateWithYear(2015, month: 2, day: 3, hour: 13, minute: 24, second: 34, nanosecond: 1000000)
+        let date2 = date1.setMonth(10)
+        let date3 = NSDate.dateWithYear(2015, month: 10, day: 3, hour: 13, minute: 24, second: 34, nanosecond: 1000000)
+        XCTAssertTrue(date2.compare(date3) == NSComparisonResult.OrderedSame)
+    }
+    
+    func test_setDay(){
+        let date1 = NSDate.dateWithYear(2015, month: 2, day: 3, hour: 13, minute: 24, second: 34, nanosecond: 1000000)
+        let date2 = date1.setDay(13)
+        let date3 = NSDate.dateWithYear(2015, month: 2, day: 13, hour: 13, minute: 24, second: 34, nanosecond: 1000000)
+        XCTAssertTrue(date2.compare(date3) == NSComparisonResult.OrderedSame)
+    }
+    
+    func test_setHour(){
+        let date1 = NSDate.dateWithYear(2015, month: 2, day: 3, hour: 13, minute: 24, second: 34, nanosecond: 1000000)
+        let date2 = date1.setHour(23)
+        let date3 = NSDate.dateWithYear(2015, month: 2, day: 3, hour: 23, minute: 24, second: 34, nanosecond: 1000000)
+        XCTAssertTrue(date2.compare(date3) == NSComparisonResult.OrderedSame)
+    }
+    
+    func test_setMinute(){
+        let date1 = NSDate.dateWithYear(2015, month: 2, day: 3, hour: 13, minute: 24, second: 34, nanosecond: 1000000)
+        let date2 = date1.setMinute(5)
+        let date3 = NSDate.dateWithYear(2015, month: 2, day: 3, hour: 13, minute: 5, second: 34, nanosecond: 1000000)
+        XCTAssertTrue(date2.compare(date3) == NSComparisonResult.OrderedSame)
+    }
+    
+    func test_setSecond(){
+        let date1 = NSDate.dateWithYear(2015, month: 2, day: 3, hour: 13, minute: 24, second: 34, nanosecond: 1000000)
+        let date2 = date1.setSecond(12)
+        let date3 = NSDate.dateWithYear(2015, month: 2, day: 3, hour: 13, minute: 24, second: 12, nanosecond: 1000000)
+        XCTAssertTrue(date2.compare(date3) == NSComparisonResult.OrderedSame)
+    }
+    
+    func test_setNanoecond(){
+        let date1 = NSDate.dateWithYear(2015, month: 2, day: 3, hour: 13, minute: 24, second: 34, nanosecond: 11000000)
+        let date2 = date1.setNanosecond(22000000)
+        let date3 = NSDate.dateWithYear(2015, month: 2, day: 3, hour: 13, minute: 24, second: 34, nanosecond: 22000000)
+        XCTAssertTrue(date2.compare(date3) == NSComparisonResult.OrderedSame)
+    }
+    
     func test_nextDate(){
         let date1 = NSDate.dateWithYear(2016, month: 3, day: 3)
         let date2 = NSDate.dateWithYear(2016, month: 3, day: 4)
-        XCTAssertTrue(date1.nextDate.isEqualToDate(date2))
+        XCTAssertTrue(date1.nextDate.compare(date2) == NSComparisonResult.OrderedSame)
     }
     
     func test_previousDate(){
         let date1 = NSDate.dateWithYear(2016, month: 3, day: 1)
         let date2 = NSDate.dateWithYear(2016, month: 2, day: 29)
-        XCTAssertTrue(date1.previousDate.isEqualToDate(date2))
+        XCTAssertTrue(date1.previousDate.compare(date2) == NSComparisonResult.OrderedSame)
     }
     
     func test_dayString(){
